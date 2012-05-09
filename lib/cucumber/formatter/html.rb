@@ -371,7 +371,7 @@ module Cucumber
       def build_exception_detail(exception)
         backtrace = Array.new
         @builder.div(:class => 'message') do
-          message = exception.message
+          message = exception.message.dup
           if defined?(RAILS_ROOT) && message.include?('Exception caught')
             matches = message.match(/Showing <i>(.+)<\/i>(?:.+) #(\d+)/)
             backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"] if matches
@@ -380,7 +380,7 @@ module Cucumber
           end
 
           unless exception.instance_of?(RuntimeError)
-            message = "#{message} (#{exception.class})"
+            message << "#{exception.class}"
           end
 
           @builder.pre do 
